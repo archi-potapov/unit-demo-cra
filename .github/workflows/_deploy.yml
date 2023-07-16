@@ -1,5 +1,4 @@
 name: Deploy with GitHub Pages dependencies preinstalled
-
 on:
   workflow_call:
 
