@@ -1,4 +1,4 @@
-name: Run tests and create release branch
+name: Run tests, create Release and Deploy
 on:
   push:
     tags:
