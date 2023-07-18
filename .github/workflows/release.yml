@@ -42,6 +42,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Show tag
         run: echo "TAG --> ${{ github.ref }}"
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -50,8 +56,15 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.changes }}
           draft: false
           prerelease: false
+      - name: Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
+          file_pattern: CHANGELOG.md
 
   deploy:
     name: Deploy
